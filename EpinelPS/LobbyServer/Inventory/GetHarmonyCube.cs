@@ -16,6 +16,22 @@ namespace EpinelPS.LobbyServer.Inventory
             List<ItemData> harmonyCubes = user.Items.Where(item =>
                 GameData.Instance.ItemHarmonyCubeTable.ContainsKey(item.ItemType)).ToList();
 
+            // 获取数据 AttractiveCounselCharacterRecord
+            /*
+            Dictionary<int, AttractiveLevelRewardRecord> accts = GameData.Instance.AttractiveLevelReward;
+            foreach (var acct in accts)
+            { 
+                Logging.WriteLine(
+                    "key = " + acct.Key
+                     + ", id = " + acct.Value.id
+                     + ", name_code = " + acct.Value.name_code
+                     + ", reward_id = " + acct.Value.reward_id
+                     + ", attractive_level = " + acct.Value.attractive_level
+                     + ", costume = " + acct.Value.costume
+                     , LogType.Debug);
+            }
+            */
+
             foreach (ItemData harmonyCube in harmonyCubes)
             {
                 if (GameData.Instance.ItemHarmonyCubeTable.TryGetValue(harmonyCube.ItemType, out ItemHarmonyCubeRecord? harmonyCubeData))
