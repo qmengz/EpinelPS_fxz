@@ -13,8 +13,7 @@ namespace EpinelPS.LobbyServer.Inventory
             User user = GetUser();
 
             ResGetHarmonyCube response = new();
-
-            List<ItemData> harmonyCubes = user.Items.Where(item => 
+            List<ItemData> harmonyCubes = user.Items.Where(item =>
                 GameData.Instance.ItemHarmonyCubeTable.ContainsKey(item.ItemType)).ToList();
 
             foreach (ItemData harmonyCube in harmonyCubes)
@@ -45,5 +44,10 @@ namespace EpinelPS.LobbyServer.Inventory
 
             await WriteDataAsync(response);
         }
+        private static void PrintMessage<T>(T data)
+        {
+            
+        }
+
     }
 }
