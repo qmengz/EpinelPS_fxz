@@ -55,6 +55,8 @@ namespace EpinelPS.LobbyServer.Inventory
                         }
 
                         response.HarmonyCubes.Add(netHarmonyCube);
+                        response.ArenaHarmonyCubes.Add(netHarmonyCube);
+                        
                     }
                 }
 
