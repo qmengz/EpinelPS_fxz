@@ -233,6 +233,18 @@ namespace EpinelPS.Data
         [LoadRecord("ProfileCardObjectTable.json", "id")]
         public readonly Dictionary<int, ProfileCardObjectTableRecord> ProfileCardObjectTable = [];
 
+        // Tables related to PlaySoda Arcade's event.
+        [LoadRecord("EventPlaySodaManagerTable.json", "id")]
+        public readonly Dictionary<int, EventPlaySodaManagerRecord> EventPlaySodaManagerTable = [];
+
+        [LoadRecord("EventPlaySodaStoryModeTable.json", "id")]
+        public readonly Dictionary<int, EventPlaySodaStoryModeRecord> EventPlaySodaStoryModeTable = [];
+
+        [LoadRecord("EventPlaySodaChallengeModeTable.json", "id")]
+        public readonly Dictionary<int, EventPlaySodaChallengeModeRecord> EventPlaySodaChallengeModeTable = [];
+
+        [LoadRecord("EventPlaySodaPointRewardTable.json", "id")]
+        public readonly Dictionary<int, EventPlaySodaPointRewardRecord> EventPlaySodaPointRewardTable = [];
 
         static async Task<GameData> BuildAsync()
         {

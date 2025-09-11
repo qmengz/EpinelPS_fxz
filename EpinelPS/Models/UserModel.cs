@@ -102,6 +102,7 @@ public class User
     // Event data
     public Dictionary<int, EventData> EventInfo = [];
     public MogMinigameInfo MogInfo = new();
+    public List<NetPlaySodaEachGameInfo> ArcadePlaySodaInfoList = [];
 
     public ReqSaveProfileCardDecorationLayout ProfileCardDecoration = new();
 

@@ -400,7 +400,7 @@ namespace EpinelPS.Data
         public string banner_print_type = "";
     }
     [MemoryPackable]
-    
+
 
     public partial class LiveWallpaperRecord
     {
@@ -408,7 +408,7 @@ namespace EpinelPS.Data
         public string livewallpaper_type = "";
     }
     [MemoryPackable]
-    
+
     public partial class AlbumResourceRecord
     {
         public int id;
@@ -600,7 +600,7 @@ namespace EpinelPS.Data
         public bool is_free;
         public string cost = "";
     }
-    
+
     public enum ShopCategoryType
     {
         None = 0,
@@ -675,7 +675,7 @@ namespace EpinelPS.Data
         public bool print_value;
         public int before_trigger_id;
     }
-    
+
     public class InfracoreFunction
     {
         public int function;
@@ -815,7 +815,7 @@ namespace EpinelPS.Data
         public long value_max;
         public int reward_id;
     }
-    
+
     public enum ItemSubType
     {
         BundleBox,
@@ -881,7 +881,7 @@ namespace EpinelPS.Data
         public int item_id;
         public int item_value;
     }
-    
+
     public enum ContentOpenType
     {
         Stage,
@@ -907,7 +907,7 @@ namespace EpinelPS.Data
         public bool is_use_quick_battle;
         public int sector;
     }
-    
+
 
     public class ItemSpawner
     {
@@ -1090,7 +1090,7 @@ namespace EpinelPS.Data
         public int spawn_condition_favoriteitem_quest_stage_id;
         public int enter_condition_favoriteitem_quest_stage_id;
     }
-    
+
     [MemoryPackable]
     public partial class ProfileCardObjectTableRecord
     {
@@ -1108,5 +1108,90 @@ namespace EpinelPS.Data
         public int require_item_id;
         public int require_item_value;
         public bool is_hidden;
+    }
+    
+    [MemoryPackable]
+    public partial class EventPlaySodaManagerRecord
+    {
+        public int id;
+        public int event_id;
+        public int daily_reward_id;
+        public int challenge_group_id;
+        public int play_helptip_id;
+        public int story_group_id;
+        public int total_point_reward_group_id;
+        public int ingame_pause_second;
+        public MiniGameSystemType minigame_type;
+        public string ui_prefab_keyword = "";
+    }
+
+    public enum MiniGameSystemType
+    {
+        Normal,
+        Archive,
+        Arcade
+    }
+
+    [MemoryPackable]
+    public partial class EventPlaySodaStoryModeRecord
+    {
+        public int id;
+        public int group_id;
+        public int stage_data_id;
+        public int stage_helptip_id;
+        public string stage_image = "";
+        public int order;
+        public EventDungeonOpenCondition open_condition_type;
+        public int open_condition_value;
+        public string game_title = "";
+        public EventPlaySodaGameType game_type;
+        public string short_name = "";
+        public int clear_reward_id;
+        public string enter_scenario = "";
+        public string exit_scenario = "";
+    }
+
+    [MemoryPackable]
+    public partial class EventPlaySodaChallengeModeRecord
+    {
+        public int id;
+        public int group_id;
+        public int stage_data_id;
+        public int stage_helptip_id;
+        public string stage_image = "";
+        public int order;
+        public EventDungeonOpenCondition open_condition_type;
+        public int open_condition_value;
+        public string game_title = "";
+        public string game_title_en = "";
+        public EventPlaySodaGameType game_type;
+        public string game_mode_resource = "";
+    }
+
+    public enum EventPlaySodaGameType
+    {
+        Running = 2001,
+        Smash = 2002,
+        CatchCoin = 2003,
+        StackUp = 2004,
+        Climbing = 2005
+    }
+
+    public enum EventDungeonOpenCondition
+    {
+        None,
+        EventDungeonStageClear,
+        EventDay
+    }
+
+    [MemoryPackable]
+    public partial class EventPlaySodaPointRewardRecord
+    {
+        public int id;
+        public int group_id;
+        public int point_value;
+        public EventPlaySodaGameType game_type;
+        public int step;
+        public int reward_id;
     }
 }
