@@ -103,6 +103,8 @@ public class User
     public Dictionary<int, EventData> EventInfo = [];
     public MogMinigameInfo MogInfo = new();
 
+    public ReqSaveProfileCardDecorationLayout ProfileCardDecoration = new();
+
     public TriggerModel AddTrigger(TriggerType type, int value, int conditionId = 0)
     {
         TriggerModel t = new()

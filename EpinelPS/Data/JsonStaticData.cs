@@ -1090,4 +1090,23 @@ namespace EpinelPS.Data
         public int spawn_condition_favoriteitem_quest_stage_id;
         public int enter_condition_favoriteitem_quest_stage_id;
     }
+    
+    [MemoryPackable]
+    public partial class ProfileCardObjectTableRecord
+    {
+        public int id;
+        public string object_type = "";
+        public string object_sub_type = "";
+        public string grade_type = "";
+        public int order;
+        public string resource_id = "";
+        public string si_resource_id = "";
+        public string name_localkey = "";
+        public string description_localkey = "";
+        public int exchange_item_id;
+        public int exchange_item_value;
+        public int require_item_id;
+        public int require_item_value;
+        public bool is_hidden;
+    }
 }

@@ -1,7 +1,8 @@
 using System.Data;
 using System.Diagnostics;
+using System.Runtime.Serialization.Json;
 using System.Security.Cryptography;
-using EpinelPS.Database;
+using System.Text;
 using EpinelPS.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using MemoryPack;
@@ -229,6 +230,9 @@ namespace EpinelPS.Data
         [LoadRecord("FavoriteItemQuestStageTable.json", "id")]
         public readonly Dictionary<int, FavoriteItemQuestStageRecord> FavoriteItemQuestStageTable = [];
 
+        [LoadRecord("ProfileCardObjectTable.json", "id")]
+        public readonly Dictionary<int, ProfileCardObjectTableRecord> ProfileCardObjectTable = [];
+
 
         static async Task<GameData> BuildAsync()
         {
@@ -434,7 +438,49 @@ namespace EpinelPS.Data
 
                 return deserializedObject;
             }
-            catch(Exception ex)
+            catch (Exception ex)
+            {
+                Logging.WriteLine($"Failed to parse {entry}:\n{ex}\n", LogType.Error);
+                return [];
+            }
+        }
+
+        public async Task<X[]> LoadZip2<X>(string entry, IProgress<double> bar) where X : new()
+        {
+            try
+            {
+                if (UseMemoryPack) entry = entry.Replace(".json", ".mpk");
+                Logging.WriteLine($"entry = {entry} ");
+                ZipEntry fileEntry = MainZip.GetEntry(entry);
+                if (fileEntry == null)
+                {
+                    Logging.WriteLine(entry + " does not exist in static data", LogType.Error);
+                    return [];
+                }
+
+                X[]? deserializedObject;
+
+                if (UseMemoryPack)
+                {
+                    Stream stream = MainZip.GetInputStream(fileEntry);
+                    deserializedObject = await MemoryPackSerializer.DeserializeAsync<X[]>(stream);
+                }
+                else
+                {
+                    using var streamReader = new System.IO.StreamReader(MainZip.GetInputStream(fileEntry));
+                    var json = await streamReader.ReadToEndAsync();
+                    Logging.WriteLine($"data = {json} ");
+                    DataTable<X> obj = JsonConvert.DeserializeObject<DataTable<X>>(json) ?? throw new Exception("deserializeobject failed");
+                    deserializedObject = [.. obj.records];
+                }
+
+                if (deserializedObject == null) throw new Exception("failed to parse " + entry);
+                currentFile++;
+                bar.Report((double)currentFile / totalFiles);
+                Logging.WriteLine($"deserializedObject = {ObjectToJson(deserializedObject)}", LogType.Debug);
+                return deserializedObject;
+            }
+            catch (Exception ex)
             {
                 Logging.WriteLine($"Failed to parse {entry}:\n{ex}\n", LogType.Error);
                 return [];
@@ -716,7 +762,7 @@ namespace EpinelPS.Data
 
         public FavoriteItemQuestRecord? GetFavoriteItemQuestTableData(int questId)
         {
-            FavoriteItemQuestTable.TryGetValue(questId, out FavoriteItemQuestRecord?data);
+            FavoriteItemQuestTable.TryGetValue(questId, out FavoriteItemQuestRecord? data);
             return data;
         }
 
@@ -724,6 +770,23 @@ namespace EpinelPS.Data
         {
             FavoriteItemQuestStageTable.TryGetValue(stageId, out FavoriteItemQuestStageRecord? data);
             return data;
+        }
+
+        public ProfileCardObjectTableRecord? GetProfileCardObjectTableData(int objectId)
+        {
+            ProfileCardObjectTable.TryGetValue(objectId, out ProfileCardObjectTableRecord? data);
+            return data;
+        }
+
+        public static string ObjectToJson(object obj)
+        {
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(obj.GetType());
+            MemoryStream stream = new MemoryStream();
+            serializer.WriteObject(stream, obj);
+            byte[] dataBytes = new byte[stream.Length];
+            stream.Position = 0;
+            stream.Read(dataBytes, 0, (int)stream.Length);
+            return Encoding.UTF8.GetString(dataBytes);
         }
     }
 }

@@ -1,6 +1,9 @@
 using EpinelPS.Database;
 using EpinelPS.Utils;
 using EpinelPS.Data;
+using System.Text;
+using System.Runtime.Serialization.Json;
+using System.Collections.Generic;
 
 namespace EpinelPS.LobbyServer.Inventory
 {
@@ -13,24 +16,19 @@ namespace EpinelPS.LobbyServer.Inventory
             User user = GetUser();
 
             ResGetHarmonyCube response = new();
-            List<ItemData> harmonyCubes = user.Items.Where(item =>
-                GameData.Instance.ItemHarmonyCubeTable.ContainsKey(item.ItemType)).ToList();
+            List<ItemData> harmonyCubes = [.. user.Items.Where(item =>
+                GameData.Instance.ItemHarmonyCubeTable.ContainsKey(item.ItemType))];
 
             // 获取数据 AttractiveCounselCharacterRecord
-            /*
-            Dictionary<int, AttractiveLevelRewardRecord> accts = GameData.Instance.AttractiveLevelReward;
-            foreach (var acct in accts)
-            { 
-                Logging.WriteLine(
-                    "key = " + acct.Key
-                     + ", id = " + acct.Value.id
-                     + ", name_code = " + acct.Value.name_code
-                     + ", reward_id = " + acct.Value.reward_id
-                     + ", attractive_level = " + acct.Value.attractive_level
-                     + ", costume = " + acct.Value.costume
-                     , LogType.Debug);
-            }
-            */
+
+            //Dictionary<int, ProfileCardObjectTableRecord> accts = GameData.Instance.ProfileCardObjectTable;
+            //foreach (var acct in accts)
+            //{
+            //   Logging.WriteLine($"{acct.Value} = {ObjectToJson(acct.Value)}", LogType.Debug);
+            //}
+            //using ProgressBar progress = new();
+            //var data = await GameData.Instance.LoadZip2<Dictionary<int, string>>("ProfileCardObjectTable.json", progress);
+            //Logging.WriteLine($"{ObjectToJson(data)}", LogType.Debug);
 
             foreach (ItemData harmonyCube in harmonyCubes)
             {
@@ -60,10 +58,16 @@ namespace EpinelPS.LobbyServer.Inventory
 
             await WriteDataAsync(response);
         }
-        private static void PrintMessage<T>(T data)
-        {
-            
-        }
+        // public static string ObjectToJson(object obj)
+        // {
+        //     DataContractJsonSerializer serializer = new DataContractJsonSerializer(obj.GetType());
+        //     MemoryStream stream = new MemoryStream();
+        //     serializer.WriteObject(stream, obj);
+        //     byte[] dataBytes = new byte[stream.Length];
+        //     stream.Position = 0;
+        //     stream.Read(dataBytes, 0, (int)stream.Length);
+        //     return Encoding.UTF8.GetString(dataBytes);
+        // }
 
     }
 }
