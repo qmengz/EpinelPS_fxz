@@ -21,14 +21,20 @@ namespace EpinelPS.LobbyServer.Inventory
 
             // 获取数据 AttractiveCounselCharacterRecord
 
-            //Dictionary<int, ProfileCardObjectTableRecord> accts = GameData.Instance.ProfileCardObjectTable;
-            //foreach (var acct in accts)
-            //{
-            //   Logging.WriteLine($"{acct.Value} = {ObjectToJson(acct.Value)}", LogType.Debug);
-            //}
-            //using ProgressBar progress = new();
-            //var data = await GameData.Instance.LoadZip2<Dictionary<int, string>>("ProfileCardObjectTable.json", progress);
-            //Logging.WriteLine($"{ObjectToJson(data)}", LogType.Debug);
+            Dictionary<int, CharacterRecord> accts = GameData.Instance.CharacterTable;
+            List<string> corporation = [];
+            List<int> name_code = [];
+            foreach (KeyValuePair<int, CharacterRecord> data in accts)
+            {
+                corporation.Add(data.Value.corporation);
+                name_code.Add(data.Value.name_code);
+                Logging.WriteLine($"{data.Value} = {GameData.Instance.ObjectToJson(data.Value)}", LogType.Debug);
+            }
+            Logging.WriteLine($"corporation = {GameData.Instance.ObjectToJson(corporation.Distinct().ToList())}", LogType.Debug);
+            Logging.WriteLine($"name_code = {GameData.Instance.ObjectToJson(name_code.Distinct().ToList())}", LogType.Debug);
+            // using ProgressBar progress = new();
+            // var data = await GameData.Instance.LoadZip2<Dictionary<int, string>>("CharacterTable.json", progress);
+            // Logging.WriteLine($"{ObjectToJson(data)}", LogType.Debug);
 
             foreach (ItemData harmonyCube in harmonyCubes)
             {
