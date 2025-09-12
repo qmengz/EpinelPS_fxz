@@ -440,6 +440,7 @@ namespace EpinelPS.Data
                     using var streamReader = new System.IO.StreamReader(MainZip.GetInputStream(fileEntry));
                     var json = await streamReader.ReadToEndAsync();
                     DataTable<X> obj = JsonConvert.DeserializeObject<DataTable<X>>(json) ?? throw new Exception("deserializeobject failed");
+                    // if("CharacterTable.json".Equals(entry)) Logging.WriteLine($"data = {ObjectToJson(obj)} ");
                     deserializedObject = [.. obj.records];
                 }
 
@@ -790,7 +791,7 @@ namespace EpinelPS.Data
             return data;
         }
 
-        public static string ObjectToJson(object obj)
+        public string ObjectToJson(object obj)
         {
             DataContractJsonSerializer serializer = new DataContractJsonSerializer(obj.GetType());
             MemoryStream stream = new MemoryStream();

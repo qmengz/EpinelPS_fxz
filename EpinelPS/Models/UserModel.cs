@@ -105,6 +105,8 @@ public class User
     public List<NetPlaySodaEachGameInfo> ArcadePlaySodaInfoList = [];
 
     public ReqSaveProfileCardDecorationLayout ProfileCardDecoration = new();
+    public ReqSetProfileRepresentativeFrame ProfileRepresentativeFrame = new();
+    
 
     public TriggerModel AddTrigger(TriggerType type, int value, int conditionId = 0)
     {
