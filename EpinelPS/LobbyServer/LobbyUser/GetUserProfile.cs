@@ -28,13 +28,13 @@ namespace EpinelPS.LobbyServer.LobbyUser
                 .SelectMany(g => g.Where(c => c.grade_core_id == 1 || c.grade_core_id == 101 || c.grade_core_id == 201 || c.name_code == 3999))];
                 List<CharacterRecord> characters = [];
 
-                    foreach (CharacterRecord ac in allCharacters)
+                foreach (CharacterRecord ac in allCharacters)
+                {
+                    if (user.HasCharacter(ac.id))
                     {
-                        if (user.HasCharacter(ac.id))
-                        {
-                            characters.Add(ac);
-                        }
+                        characters.Add(ac);
                     }
+                }
                 response.Data.CharacterCount.Add(new NetCharacterCount() { Count = characters.Where(c => c.corporation.Equals("ELYSION")).ToList().Count, CorporationType = 1 });
                 response.Data.CharacterCount.Add(new NetCharacterCount() { Count = characters.Where(c => c.corporation.Equals("MISSILIS")).ToList().Count, CorporationType = 2 });
                 response.Data.CharacterCount.Add(new NetCharacterCount() { Count = characters.Where(c => c.corporation.Equals("TETRA")).ToList().Count, CorporationType = 3 });
@@ -45,10 +45,7 @@ namespace EpinelPS.LobbyServer.LobbyUser
                 response.Data.LastCampaignNormalStageId = user.LastNormalStageCleared;
                 response.Data.LastCampaignHardStageId = user.LastHardStageCleared;
                 response.Data.OutpostOpenState = user.MainQuestData.ContainsKey(25);
-                if (user.Currency.TryGetValue(CurrencyType.UserExp, out long exp))
-                {
-                    response.Data.Exp = (int)exp;
-                }
+                response.Data.Exp = user.userPointData.ExperiencePoint;
                 response.Data.SynchroLv = user.SynchroDeviceLevel;
                 response.Data.SynchroSlotCount = user.SynchroSlots.Count(x => x.CharacterSerialNumber > 0);
 
