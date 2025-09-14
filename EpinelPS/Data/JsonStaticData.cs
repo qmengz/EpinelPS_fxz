@@ -283,6 +283,24 @@ namespace EpinelPS.Data
     }
 
     [MemoryPackable]
+    public partial class EquipmentOptionRecord
+    {
+        public int id;
+        public string description_localkey = "";
+        public int equipment_option_group_id;
+        public int option_group_ratio;
+        public int state_effect_group_id;
+        public List<StateEffect> state_effect_list = null!;
+        public int option_ratio;
+    }
+
+    public class StateEffect
+    {
+        public int state_effect_id;
+        public int state_effect_level;
+    }
+
+    [MemoryPackable]
     public partial class FieldItemRecord
     {
         public int id;
@@ -1109,7 +1127,7 @@ namespace EpinelPS.Data
         public int require_item_value;
         public bool is_hidden;
     }
-    
+
     [MemoryPackable]
     public partial class EventPlaySodaManagerRecord
     {

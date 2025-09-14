@@ -61,9 +61,12 @@ namespace EpinelPS.Data
 
         [LoadRecord("ContentsTutorialTable.json", "id")]
         public readonly Dictionary<int, ClearedTutorialData> TutorialTable = [];
-        [LoadRecord("ItemEquipTable.json", "id")]
 
+        [LoadRecord("ItemEquipTable.json", "id")]
         public readonly Dictionary<int, ItemEquipRecord> ItemEquipTable = [];
+
+        [LoadRecord("EquipmentOptionTable.json", "id")]
+        public readonly Dictionary<int, EquipmentOptionRecord> EquipmentOptionTable = [];
 
         [LoadRecord("ItemMaterialTable.json", "id")]
         public readonly Dictionary<int, ItemMaterialRecord> itemMaterialTable = [];
@@ -440,7 +443,7 @@ namespace EpinelPS.Data
                     using var streamReader = new System.IO.StreamReader(MainZip.GetInputStream(fileEntry));
                     var json = await streamReader.ReadToEndAsync();
                     DataTable<X> obj = JsonConvert.DeserializeObject<DataTable<X>>(json) ?? throw new Exception("deserializeobject failed");
-                    // if("CharacterTable.json".Equals(entry)) Logging.WriteLine($"data = {ObjectToJson(obj)} ");
+                    // if("ItemEquipTable.json".Equals(entry)) Logging.WriteLine($"data = {ObjectToJson(obj)} ");
                     deserializedObject = [.. obj.records];
                 }
 
@@ -482,7 +485,7 @@ namespace EpinelPS.Data
                 {
                     using var streamReader = new System.IO.StreamReader(MainZip.GetInputStream(fileEntry));
                     var json = await streamReader.ReadToEndAsync();
-                    Logging.WriteLine($"data = {json} ");
+                    Logging.WriteLine($"data = {System.Text.RegularExpressions.Regex.Replace(json, @"\s+", "")} ");
                     DataTable<X> obj = JsonConvert.DeserializeObject<DataTable<X>>(json) ?? throw new Exception("deserializeobject failed");
                     deserializedObject = [.. obj.records];
                 }

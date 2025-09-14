@@ -123,7 +123,7 @@ namespace EpinelPS.Utils
             {
                 return harmonyCube.location_id;
             }
-            return 1; 
+            return 1;
         }
         /// <summary>
         /// Takes multiple NetRewardData objects and merges it into one. Note that this function expects that rewards are already applied to user object.
@@ -464,5 +464,22 @@ namespace EpinelPS.Utils
 
             return ret;
         }
+        
+        public static NetEquipmentAwakeningOption AwakeningOptionToNet(ResetAwakeningOption option)
+        {
+            return new()
+            {
+                Option1Id = option.Option1Id,
+                Option2Id = option.Option2Id,
+                Option3Id = option.Option3Id,
+                Option1Lock = option.Option1Lock,
+                Option2Lock = option.Option2Lock,
+                Option3Lock = option.Option3Lock,
+                IsOption1DisposableLock = option.IsOption1DisposableLock,
+                IsOption2DisposableLock = option.IsOption2DisposableLock,
+                IsOption3DisposableLock = option.IsOption3DisposableLock,
+            };
+        }
+
     }
 }
