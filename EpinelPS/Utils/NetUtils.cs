@@ -267,6 +267,14 @@ namespace EpinelPS.Utils
                 Value = CalcOutpostRewardAmount(battleData.user_exp, 3, 1, duration.TotalMinutes)
             });
 
+            foreach (NetCurrencyData? item in result.Currency)
+            {
+                if ((CurrencyType)item.Type == CurrencyType.UserExp)
+                {
+                    RegisterRewardsForUser(user, result, (int)item.Value);
+                }
+            }
+
             return result;
         }
 
@@ -278,6 +286,44 @@ namespace EpinelPS.Utils
             }
 
             // TODO: other things that are used by the function above
+        }
+
+        private static void RegisterRewardsForUser(User user, NetRewardData result, int exp)
+        {
+            if (exp != 0)
+            {
+                int newXp = exp + user.userPointData.ExperiencePoint;
+
+                int newLevelExp = GameData.Instance.GetUserMinXpForLevel(user.userPointData.UserLevel);
+                int newLevel = user.userPointData.UserLevel;
+
+                if (newLevelExp == -1)
+                {
+                    Console.WriteLine("Unknown user level value for xp " + newXp);
+                }
+
+
+                while (newXp >= newLevelExp)
+                {
+                    newLevel++;
+                    newXp -= newLevelExp;
+                    newLevelExp = GameData.Instance.GetUserMinXpForLevel(newLevel);
+                }
+                result.UserExp = new NetIncreaseExpData()
+                {
+                    BeforeExp = user.userPointData.ExperiencePoint,
+                    BeforeLv = user.userPointData.UserLevel,
+
+                    // IncreaseExp = rewardData.user_exp,
+                    CurrentExp = newXp,
+                    CurrentLv = newLevel,
+
+                    GainExp = exp,
+
+                };
+                user.userPointData.ExperiencePoint = newXp;
+                user.userPointData.UserLevel = newLevel;
+            }
         }
 
         internal static List<NetTimeReward> GetOutpostTimeReward(User user)
